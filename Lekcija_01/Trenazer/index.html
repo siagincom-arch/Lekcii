@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Интерактивный тренажёр по методологии Vibecoding — пошаговое руководство по созданию продукта">
+  <title>🏋️ Тренажёр Vibecoding</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="app-logo">🏋️ Vibecoding</div>
+      <input type="text" id="projectName" class="project-name-input" placeholder="Название проекта...">
+      <div class="header-actions">
+        <button class="btn btn-ghost btn-icon" id="darkModeToggle" onclick="toggleDarkMode()" title="Переключить тему">
+          🌙
+        </button>
+        <button class="btn btn-ghost btn-icon" onclick="showRefPanel()" title="📌 Шпаргалка и советы">
+          📌
+        </button>
+        <button class="btn btn-primary" onclick="exportMarkdown()" title="Экспорт в Markdown">
+          📥 Экспорт
+        </button>
+        <button class="btn btn-danger btn-icon" onclick="showResetModal()" title="Сбросить прогресс">
+          🗑️
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- PROGRESS -->
+  <section class="progress-section">
+    <div class="progress-bar-container">
+      <div class="progress-meta">
+        <span class="progress-label">Общий прогресс</span>
+        <span class="progress-percent" id="progressPercent">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="steps-dots" id="stepsDots"></div>
+    </div>
+  </section>
+
+  <!-- MAIN CARD -->
+  <main class="main-section">
+    <div class="step-card" id="stepCard">
+
+      <!-- Card Header -->
+      <div class="card-header">
+        <div class="step-badge" id="stepBadge">Этап 0</div>
+        <h1 class="step-title" id="stepTitle"></h1>
+        <p class="step-goal" id="stepGoal"></p>
+      </div>
+
+      <!-- Card Body -->
+      <div class="card-body">
+
+        <!-- What to do -->
+        <div class="instructions-section" id="instructionsSection">
+          <div class="section-label">📝 Что делать</div>
+          <ol class="instructions-list" id="instructionsList"></ol>
+        </div>
+
+        <!-- Checklist -->
+        <div class="checklist-section">
+          <div class="section-label">📋 Чеклист</div>
+          <ul class="checklist" id="checklist"></ul>
+        </div>
+
+        <!-- Prompt -->
+        <div class="prompt-section" id="promptSection">
+          <div class="section-label">💬 Промпт для Antigravity</div>
+          <div class="prompt-box">
+            <p id="promptText"></p>
+            <button class="copy-btn" onclick="copyPrompt()">📋 Копировать</button>
+          </div>
+        </div>
+
+        <!-- Tips -->
+        <div class="tips-section" id="tipsSection">
+          <div class="section-label">💡 Подсказка</div>
+          <p id="tipsText"></p>
+        </div>
+
+        <!-- Notes -->
+        <div class="notes-section">
+          <div class="section-label">✏️ Ваши заметки</div>
+          <textarea id="stepTextarea" class="notes-textarea"
+            placeholder="Запишите ключевые мысли, выводы, идеи для этого этапа..."
+            oninput="onTextInput(this)"></textarea>
+          <div class="textarea-meta">
+            <span class="char-count" id="charCount">0 символов</span>
+            <span class="save-indicator" id="saveIndicator">✓ Сохранено</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Card Footer -->
+      <div class="card-footer">
+        <button class="nav-btn prev" id="prevBtn" onclick="prevStep()">
+          ← Назад
+        </button>
+        <span class="step-counter" id="stepCounter">1 / 12</span>
+        <button class="nav-btn next" id="nextBtn" onclick="nextStep()">
+          Далее →
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- KEYBOARD HINT -->
+  <div class="keyboard-hint" id="keyboardHint">
+    <span>←→ для навигации</span>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- RESET MODAL -->
+  <div class="modal-overlay" id="resetModal">
+    <div class="modal">
+      <h3>🗑️ Сбросить прогресс?</h3>
+      <p>Все заметки и чеклисты будут удалены. Это действие нельзя отменить.</p>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="hideResetModal()">Отмена</button>
+        <button class="btn btn-danger" onclick="confirmReset()">Сбросить</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REFERENCE PANEL (Шпаргалка + Правила + Советы) -->
+  <div class="ref-overlay" id="refOverlay" onclick="hideRefPanel()"></div>
+  <aside class="ref-panel" id="refPanel">
+    <div class="ref-header">
+      <h2>📚 Справочник</h2>
+      <button class="btn btn-ghost btn-icon" onclick="hideRefPanel()">✕</button>
+    </div>
+
+    <div class="ref-tabs">
+      <button class="ref-tab active" data-tab="cheatsheet" onclick="switchRefTab('cheatsheet')">📌 Шпаргалка</button>
+      <button class="ref-tab" data-tab="safety" onclick="switchRefTab('safety')">🛡️ Безопасность</button>
+      <button class="ref-tab" data-tab="tips" onclick="switchRefTab('tips')">🧠 Советы</button>
+    </div>
+
+    <div class="ref-content" id="refContent">
+      <!-- Cheatsheet -->
+      <div class="ref-tab-content active" id="tab-cheatsheet">
+        <table class="ref-table">
+          <thead>
+            <tr>
+              <th>Действие</th>
+              <th>Что делать</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>✅ Подтвердить изменения</td>
+              <td>Нажать <strong>Accept All</strong> (синяя кнопка)</td>
+            </tr>
+            <tr>
+              <td>❌ Откатить изменения</td>
+              <td>Нажать <strong>Reject All</strong></td>
+            </tr>
+            <tr>
+              <td>💬 Новый чат</td>
+              <td>Нажать <strong>+</strong> (справа)</td>
+            </tr>
+            <tr>
+              <td>📜 Посмотреть историю</td>
+              <td>Кнопка с кружком-стрелкой → Show More</td>
+            </tr>
+            <tr>
+              <td>📎 Прикрепить файл</td>
+              <td>Перетащить файл в чат</td>
+            </tr>
+            <tr>
+              <td>📂 Прикрепить папку</td>
+              <td>Перетащить всю папку в чат (= полный контекст)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 class="ref-subtitle">🔄 Цикл разработки</h3>
+        <div class="lifecycle-diagram">
+          <span>0. Исследование</span> → <span>1. Идея</span> → <span>2. ТЗ</span> → <span>3. Архитектура</span> →
+          <span>4. Дизайн</span>
+          → <span>5. Запуск</span> → <span>5.1 Задачи</span> → <span>6. Тест</span>
+          → <span>7. Деплой</span> → <span>8. Дебаг</span> → <span>9. Релиз</span> → <span>10. Пост-релиз</span> ↩
+        </div>
+      </div>
+
+      <!-- Safety Rules -->
+      <div class="ref-tab-content" id="tab-safety">
+        <ol class="safety-list">
+          <li><strong>AI не действует автономно</strong> — ты контролируешь</li>
+          <li><strong>Работай только в папке проекта</strong> (изоляция)</li>
+          <li><strong>Не разрешай глобальное удаление</strong> файлов</li>
+          <li><strong>Для рискованных задач</strong> — используй отдельный сервер/ВМ</li>
+          <li><strong>Пропиши глобальный промпт</strong> (правила для AI)</li>
+          <li><strong>Проси логировать все действия</strong></li>
+          <li><strong>Смотри внимательно</strong>, что запускается в терминале</li>
+          <li><strong>Делай бэкапы</strong> (GitHub + копии)</li>
+          <li><strong>Храни ключи в .env</strong>, исключённом из git</li>
+          <li><strong>Пошагово одобряй изменения</strong> до стабилизации</li>
+        </ol>
+      </div>
+
+      <!-- Tips -->
+      <div class="ref-tab-content" id="tab-tips">
+        <ul class="tips-list-panel">
+          <li>🤖 <strong>Модель по умолчанию</strong> → Claude Opus. Фоллбэк → Gemini 3.1</li>
+          <li>📦 <strong>GitHub = библиотека</strong> — ищи готовые решения, а не пиши с нуля</li>
+          <li>🎙️ <strong>Whisper-бот</strong> — транскрибируй все разговоры с клиентами</li>
+          <li>⚡ <strong>Правило №1</strong> — работает продукт или нет, остальное неважно</li>
+          <li>🚀 <strong>Не сдерживай себя</strong> — если можешь продвинуться на 3 этапа за день, делай</li>
+          <li>🗄️ <strong>Supabase</strong> вместо Google Sheets / Airtable — масштабируется лучше</li>
+          <li>🔌 <strong>OpenRouter</strong> — единый API ко всем моделям</li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CONFETTI CANVAS -->
+  <canvas id="confetti" class="confetti-canvas"></canvas>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
