@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регламент Vibecoding | Инфографика</title>
+    <style>
+        :root {
+            --primary: #6366f1; /* Индиго */
+            --primary-hover: #4f46e5;
+            --secondary: #ec4899; /* Розовый */
+            --tertiary: #14b8a6; /* Бирюзовый */
+            --bg-color: #0f172a; /* Темный синий (Slate 900) */
+            --surface: #1e293b; /* Slate 800 */
+            --surface-glass: rgba(30, 41, 59, 0.7);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+            
+            --neon-blue: #00f0ff;
+            --neon-purple: #8b5cf6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 3rem 1rem;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.15), transparent 25%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--neon-blue), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Timeline Layout */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary), var(--tertiary));
+            border-radius: 4px;
+        }
+
+        .stage-card {
+            position: relative;
+            width: 45%;
+            margin-bottom: 3rem;
+            background: var(--surface-glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stage-card:nth-child(odd) {
+            left: 0;
+        }
+
+        .stage-card:nth-child(even) {
+            left: 55%;
+        }
+
+        .stage-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.4);
+        }
+
+        /* Stage Numbers (Dots on Timeline) */
+        .stage-number {
+            position: absolute;
+            top: 2rem;
+            width: 40px;
+            height: 40px;
+            background: var(--bg-color);
+            border: 3px solid var(--neon-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--text-main);
+            z-index: 10;
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .stage-card:nth-child(odd) .stage-number {
+            right: -11.5%; /* Position exactly on the line */
+            transform: translateX(50%);
+        }
+
+        .stage-card:nth-child(even) .stage-number {
+            left: -11.5%; /* Position exactly on the line */
+            transform: translateX(-50%);
+            border-color: var(--secondary);
+            box-shadow: 0 0 10px var(--secondary);
+        }
+
+        /* 3rd color variant */
+        .stage-card:nth-child(3n) .stage-number {
+            border-color: var(--tertiary);
+            box-shadow: 0 0 10px var(--tertiary);
+        }
+
+        /* Content inside cards */
+        .stage-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stage-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+
+        .stage-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .stage-desc {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .stage-artifact {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: var(--neon-blue);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+        }
+
+        .stage-card:nth-child(even) .stage-artifact {
+            color: #ff7bc0;
+            border-color: rgba(236, 72, 153, 0.2);
+        }
+
+        /* Footer Skills Section */
+        .footer-tools {
+            margin-top: 6rem;
+            text-align: center;
+        }
+
+        .tools-grid {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tool-card {
+            background: linear-gradient(145deg, var(--surface), rgba(15, 23, 42, 0.8));
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            width: 300px;
+            transition: all 0.3s ease;
+        }
+
+        .tool-card:hover {
+            border-color: var(--tertiary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(20, 184, 166, 0.1);
+        }
+
+        .tool-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .timeline::before {
+                left: 30px;
+            }
+            .stage-card {
+                width: calc(100% - 70px);
+                left: 70px !important;
+            }
+            .stage-number {
+                left: -70px !important;
+                transform: translateX(30px) !important;
+            }
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+    <!-- Подключение шрифта Inter для современного вида -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Жизненный цикл Vibecoding</h1>
+            <p class="subtitle">От идеи до готового продукта за 10 этапов взаимодействия с ИИ-агентом Antigravity.</p>
+        </header>
+
+        <div class="timeline">
+            <!-- Stage 0 -->
+            <div class="stage-card">
+                <div class="stage-number">0</div>
+                <div class="stage-header">
+                    <span class="stage-icon">🧹</span>
+                    <h2 class="stage-title">Подготовка</h2>
+                </div>
+                <p class="stage-desc">Очистка контекста, проверка работы основных инструментов, пересмотр регламентов и подготовка рабочего места.</p>
+            </div>
+
+            <!-- Stage 1 -->
+            <div class="stage-card">
+                <div class="stage-number">1</div>
+                <div class="stage-header">
+                    <span class="stage-icon">💡</span>
+                    <h2 class="stage-title">Идея продукта</h2>
+                </div>
+                <p class="stage-desc">Формулировка концепции, определение проблемы, ЦА, входных и выходных данных, чтобы ИИ понял суть проекта.</p>
+                <div class="stage-artifact">📄 1_идея.md</div>
+            </div>
+
+            <!-- Stage 2 -->
+            <div class="stage-card">
+                <div class="stage-number">2</div>
+                <div class="stage-header">
+                    <span class="stage-icon">📋</span>
+                    <h2 class="stage-title">Техническое задание</h2>
+                </div>
+                <p class="stage-desc">Превращение идеи в чёткий свод правил, функций и выбор стека технологий. Скелет будущего приложения.</p>
+                <div class="stage-artifact">📄 2_техническое_задание.md</div>
+            </div>
+
+            <!-- Stage 3 -->
+            <div class="stage-card">
+                <div class="stage-number">3</div>
+                <div class="stage-header">
+                    <span class="stage-icon">🏗️</span>
+                    <h2 class="stage-title">Архитектура проекта</h2>
+                </div>
+                <p class="stage-desc">Создание модулей, файловой структуры и схемы взаимодействия баз данных. Распределение компонентов.</p>
+                <div class="stage-artifact">📄 3_архитектура_проекта.md</div>
+            </div>
+
+            <!-- Stage 4 -->
+            <div class="stage-card">
+                <div class="stage-number">4</div>
+                <div class="stage-header">
+                    <span class="stage-icon">🎨</span>
+                    <h2 class="stage-title">Требования к дизайну</h2>
+                </div>
+                <p class="stage-desc">Описание визуального стиля, UI/UX паттернов, цветовой палитры и эмодзи (для ботов), формирующих интерфейс.</p>
+                <div class="stage-artifact">📄 4_требования_к_дизайну.md</div>
+            </div>
+
+            <!-- Stage 5 -->
+            <div class="stage-card">
+                <div class="stage-number">5</div>
+                <div class="stage-header">
+                    <span class="stage-icon">🚀</span>
+                    <h2 class="stage-title">Запуск локально + Задачи</h2>
+                </div>
+                <p class="stage-desc">Генерация первого кода, декомпозиция плана на мелкие задачи и тестирование функционала на своём компьютере.</p>
+                <div class="stage-artifact">📄 5_запуск_продукта.md</div>
+            </div>
+
+            <!-- Stage 6 -->
+            <div class="stage-card">
+                <div class="stage-number">6</div>
+                <div class="stage-header">
+                    <span class="stage-icon">🧪</span>
+                    <h2 class="stage-title">Тестирование</h2>
+                </div>
+                <p class="stage-desc">Итеративный процесс поиска и исправления локальных ошибок. "Работает / Не работает" — главный критерий.</p>
+                <div class="stage-artifact">📄 6_тестирование.md</div>
+            </div>
+
+            <!-- Stage 7 -->
+            <div class="stage-card">
+                <div class="stage-number">7</div>
+                <div class="stage-header">
+                    <span class="stage-icon">🌐</span>
+                    <h2 class="stage-title">Деплой продукта</h2>
+                </div>
+                <p class="stage-desc">Публикация проекта в сети (Vercel, Railway), подключение баз данных и настройка переменных окружения.</p>
+                <div class="stage-artifact">📄 7_деплой.md</div>
+            </div>
+
+            <!-- Stage 8 -->
+            <div class="stage-card">
+                <div class="stage-number">8</div>
+                <div class="stage-header">
+                    <span class="stage-icon">🐛</span>
+                    <h2 class="stage-title">Дебаггинг на сервере</h2>
+                </div>
+                <p class="stage-desc">Проверка работы продукта в реальных (продакшн) условиях, отлов и исправление несостыковок окружения.</p>
+                <div class="stage-artifact">📄 8_дебаггинг.md</div>
+            </div>
+
+            <!-- Stage 9 -->
+            <div class="stage-card">
+                <div class="stage-number">9</div>
+                <div class="stage-header">
+                    <span class="stage-icon">🎉</span>
+                    <h2 class="stage-title">Релиз &amp; Пост-релиз (10)</h2>
+                </div>
+                <p class="stage-desc">Сдача проекта пользователям, сбор обратной связи, анализ метрик и планирование следующей итерации.</p>
+                <div class="stage-artifact">📄 9_релиз.md</div>
+            </div>
+        </div>
+
+        <div class="footer-tools">
+            <h2 style="font-size: 2rem; margin-bottom: 1rem;">Арсенал инструментов</h2>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-title"><span>🤖</span> Claude Code</div>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">Терминальный мультиагент, способный параллельно запускать команды субагентов для аудита и разработки.</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-title"><span>🧩</span> Скиллы (Skills)</div>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">Инструкции (markdown) для ИИ. Устанавливаются глобально (~/) или локально (./) через skills.sh.</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-title"><span>🔌</span> MCP Серверы</div>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">Протокол контекста моделей. Даёт ИИ прямое подключение к базам (Supabase), дизайну (Figma) и документации (Context7).</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
