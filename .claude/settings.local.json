@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/Natalja/.claude/plugins/cache/claude-plugins-official/skill-creator/bd041495bd2a/skills/skill-creator/**)",
+      "Bash(python eval-viewer/generate_review.py \"C:/Users/Natalja/.claude/skills/vibe-architect-workspace/iteration-1\" --skill-name \"vibe-architect\" --benchmark \"C:/Users/Natalja/.claude/skills/vibe-architect-workspace/iteration-1/benchmark.json\" --static \"C:/Users/Natalja/.claude/skills/vibe-architect-workspace/iteration-1/review.html\")",
+      "Bash(start \"\" \"C:/Users/Natalja/.claude/skills/vibe-architect-workspace/iteration-1/review.html\")"
+    ]
+  }
+}
